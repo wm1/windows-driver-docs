@@ -1,6 +1,7 @@
 ---
 Description: Describes the USB connector manager (UCM) that manages a USB Type-C connector and the expected behavior of a connector driver.
 title: Write a USB Type-C connector driver
+author: windows-driver-content
 ms.author: windowsdriverdev
 ms.date: 04/20/2017
 ms.topic: article
@@ -28,7 +29,7 @@ ms.technology: windows-devices
 
 **WDF version**
 
--   KMDF version 1.15.
+-   KMDF version 1.15
 -   UMDF version 2.15
 
 **Last updated:**
@@ -63,7 +64,7 @@ To enable a USB Type-C connector on a system, you must write the client driver.
 
     This support enables you to build Windows devices with USB Type-C connectors, USB Type-C docks and accessories, and USB Type-C chargers. The client driver reports connector events that allow the operating system to implement policies around USB and power consumption in the system.
 
--   Install Windows 10 for desktop editions (Home, Pro, Enterprise, and Education) on your target computer or Windows 10 Mobile with the USB Type-C connector.
+-   Install Windows 10 for desktop editions (Home, Pro, Enterprise, and Education) on your target computer or Windows 10 Mobile with a USB Type-C connector.
 -   Familiarize yourself with UCM and how it interacts with other Windows drivers. See [Architecture: USB Type-C design for a Windows system](architecture--usb-type-c-in-a-windows-system.md).
 -   Familiarize yourself with Windows Driver Foundation (WDF). Recommended reading: [Developing Drivers with Windows Driver Foundation]( http://go.microsoft.com/fwlink/p/?LinkId=691676), written by Penny Orwick and Guy Smith.
 
@@ -168,9 +169,9 @@ EvtDevicePrepareHardware(
     //
     // Initialize UCM Manager
     //
-    UCM_MANAGER_CONFIG_INIT(&amp;ucmCfg);
+    UCM_MANAGER_CONFIG_INIT(&ucmCfg);
 
-    status = UcmInitializeDevice(Device, &amp;ucmCfg);
+    status = UcmInitializeDevice(Device, &ucmCfg);
     if (!NT_SUCCESS(status))
     {
         TRACE_ERROR(
@@ -184,23 +185,23 @@ EvtDevicePrepareHardware(
     //
     // Create a USB Type-C connector #0 with PD
     //
-    UCM_CONNECTOR_CONFIG_INIT(&amp;connCfg, 0);
+    UCM_CONNECTOR_CONFIG_INIT(&connCfg, 0);
 
     UCM_CONNECTOR_TYPEC_CONFIG_INIT(
-        &amp;typeCConfig,
+        &typeCConfig,
         UcmTypeCOperatingModeDrp,
         UcmTypeCCurrentDefaultUsb | UcmTypeCCurrent1500mA | UcmTypeCCurrent3000mA);
 
     typeCConfig.EvtSetDataRole = EvtSetDataRole;
 
-    UCM_CONNECTOR_PD_CONFIG_INIT(&amp;pdConfig, UcmPowerRoleSink | UcmPowerRoleSource);
+    UCM_CONNECTOR_PD_CONFIG_INIT(&pdConfig, UcmPowerRoleSink | UcmPowerRoleSource);
 
-    connCfg.TypeCConfig = &amp;typeCConfig;
-    connCfg.PdConfig = &amp;pdConfig;
+    connCfg.TypeCConfig = &typeCConfig;
+    connCfg.PdConfig = &pdConfig;
 
-    WDF_OBJECT_ATTRIBUTES_INIT_CONTEXT_TYPE(&amp;attr, CONNECTOR_CONTEXT);
+    WDF_OBJECT_ATTRIBUTES_INIT_CONTEXT_TYPE(&attr, CONNECTOR_CONTEXT);
 
-    status = UcmConnectorCreate(Device, &amp;connCfg, &amp;attr, &amp;devCtx->Connector);
+    status = UcmConnectorCreate(Device, &connCfg, &attr, &devCtx->Connector);
     if (!NT_SUCCESS(status))
     {
         TRACE_ERROR(
@@ -211,7 +212,7 @@ EvtDevicePrepareHardware(
 
     connCtx = GetConnectorContext(devCtx->Connector);
 
-    UcmEventInitialize(&amp;connCtx->EventSetDataRole);
+    UcmEventInitialize(&connCtx->EventSetDataRole);
 
     TRACE_INFO("UcmConnectorCreate() succeeded.");
 
@@ -233,13 +234,13 @@ The UCM class extension also notifies the USB role-switch drivers (URS). Based o
         UCM_CONNECTOR_TYPEC_ATTACH_PARAMS attachParams;
 
         UCM_CONNECTOR_TYPEC_ATTACH_PARAMS_INIT(
-            &amp;attachParams,
+            &attachParams,
             UcmTypeCPortStateDfp);
         attachParams.CurrentAdvertisement = UcmTypeCCurrent1500mA;
 
         status = UcmConnectorTypeCAttach(
                     Connector,
-                    &amp;attachParams);
+                    &attachParams);
         if (!NT_SUCCESS(status))
         {
             TRACE_ERROR(

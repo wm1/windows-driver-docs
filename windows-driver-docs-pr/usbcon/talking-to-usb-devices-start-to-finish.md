@@ -1,6 +1,7 @@
 ---
 Description: Use the Windows Runtime APIs, introduced in Windows 8.1, to write Windows Store apps that gives users access to their peripheral USB device.
 title: Talking to USB devices, start to finish (Windows Store app)
+author: windows-driver-content
 ms.author: windowsdriverdev
 ms.date: 04/20/2017
 ms.topic: article
@@ -85,7 +86,7 @@ Follow the steps in this section or, skip directly to the [Custom USB device acc
 <td><p>You can obtain that information from the device manufacturer.</p>
 <ul>
 <li><p><strong>Vendor and product identifiers</strong></p>
-<p>In Device Manager, view the device properties. On the <strong>Details</strong> tab, view the <strong>Hardware Id</strong> property value. That value is a combination of those two identifiers. For example, for the SuperMUTT device, the <strong>Hardware Id</strong> is &quot;USB\VID_045E&amp;PID_F001&quot;; vendor ID is &quot;0x045E&quot; and product ID is &quot;0xF001&quot;.</p></li>
+<p>In Device Manager, view the device properties. On the <strong>Details</strong> tab, view the <strong>Hardware Id</strong> property value. That value is a combination of those two identifiers. For example, for the SuperMUTT device, the <strong>Hardware Id</strong> is &quot;USB\VID_045E&PID_F001&quot;; vendor ID is &quot;0x045E&quot; and product ID is &quot;0xF001&quot;.</p></li>
 <li><strong>Device class, subclass, and protocol codes</strong></li>
 <li><strong>Device interface GUID</strong></li>
 </ul>
